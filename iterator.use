@@ -1,0 +1,50 @@
+model Iterator
+
+-- classes
+
+class Aggregate
+-- attributes
+	
+operations
+	createIterator()
+end
+
+class Aggregate1 < Aggregate
+attributes
+	name : String
+operations
+	createIterator()
+end
+
+class Iterator 
+-- attributes
+
+operations
+	next() : Aggregate
+	hasNext() : Boolean
+end
+
+class Iterator1 < Iterator
+attributes
+	name : String
+operations
+	next() : Aggregate1 
+	hasNext() : Boolean
+end
+
+class Client
+--attributes
+--operations		
+end
+
+-- associations
+
+association clientAg between
+	Client [1] role client
+	Aggregate [1] role agg
+end
+
+association clientIt between
+	Client [1] role client
+	Iterator [1] role iter
+end
