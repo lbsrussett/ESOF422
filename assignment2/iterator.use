@@ -18,7 +18,8 @@ operations
 end
 
 class Iterator 
--- attributes
+attributes
+	hasNext: Boolean
 
 operations
 	next() : Aggregate
@@ -28,6 +29,7 @@ end
 class Iterator1 < Iterator
 attributes
 	name : String
+	--hasNext: Boolean
 operations
 	next() : Aggregate1 
 	hasNext() : Boolean
@@ -65,8 +67,8 @@ context Aggregate1::createIterator()
 	post createIterPost: iter.isDefined()
 
 --not sure how to make condition based on operation value
---context Iterator1::next(): Aggregate1
-	--pre nextPre: hasNext() = true
+context Iterator1::next(): Aggregate1
+	pre nextPre: hasNext = true
 	--post: none
 
 context Iterator1::hasNext(): Boolean
