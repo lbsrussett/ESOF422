@@ -51,8 +51,8 @@ association clientIt between
 end
 
 association creates between
-	Aggregate1 [1] role collection
-	Iterator1 [1] role iter
+	Aggregate1 [0..1] role collection
+	Iterator1 [0..1] role iter
 end
 
 -- constraints
