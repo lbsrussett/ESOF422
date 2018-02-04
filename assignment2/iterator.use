@@ -64,6 +64,7 @@ context Aggregate1::createIterator()
 	pre createIterPre: not iter.isDefined()
 	post createIterPost: iter.isDefined()
 
+--not sure how to make condition based on operation value
 --context Iterator1::next(): Aggregate1
 	--pre nextPre: hasNext() = true
 	--post: none
