@@ -31,6 +31,8 @@ attributes
 operations
 	next() : Aggregate1 
 	hasNext() : Boolean
+	begin
+	end
 end
 
 class Client
@@ -62,12 +64,12 @@ context Aggregate1::createIterator()
 	pre createIterPre: not iter.isDefined()
 	post createIterPost: iter.isDefined()
 
-context Iterator1::next()
-	pre nextPre: hasNext()
-	post: --none
+--context Iterator1::next(): Aggregate1
+	--pre nextPre: hasNext() = true
+	--post: none
 
-context Iterator1::hasNext()
+context Iterator1::hasNext(): Boolean
 	pre hasNextPre: collection.isDefined()
-	post: --none
+	--post: none
 
 
