@@ -31,7 +31,7 @@ attributes
 	name : String
 	--hasNext: Boolean
 operations
-	next() : Aggregate1 
+	next() : ConcreteAggregate 
 	hasNext() : Boolean
 	begin
 	end
@@ -55,23 +55,23 @@ association clientIt between
 end
 
 association creates between
-	Aggregate1 [0..1] role collection
-	Iterator1 [0..1] role iter
+	ConcreteAggregate [0..1] role collection
+	ConcreteIterator [0..1] role iter
 end
 
 -- constraints
 
 constraints
-context Aggregate1::createIterator()
+context ConcreteAggregate::createIterator()
 	pre createIterPre: not iter.isDefined()
 	post createIterPost: iter.isDefined()
 
 --not sure how to make condition based on operation value
-context Iterator1::next(): Aggregate1
+context ConcreteIterator::next(): ConcreteAggregate
 	pre nextPre: hasNext = true
 	--post: none
 
-context Iterator1::hasNext(): Boolean
+context ConcreteIterator::hasNext(): Boolean
 	pre hasNextPre: collection.isDefined()
 	--post: none
 
