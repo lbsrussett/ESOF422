@@ -2,9 +2,9 @@ model Iterator
 
 -- classes
 
-class Aggregate
--- attributes
-	
+abstract class Aggregate
+attributes
+	numObjects: Real init : 10
 operations
 	createIterator()
 	
@@ -12,34 +12,52 @@ end
 
 class ConcreteAggregate < Aggregate
 attributes
-	name : String
+	name : String init : 'Collecton'
 operations
-	createIterator()
+	createIterator() --: ConcreteIterator
+
+	begin
+	--	declare iterator : Iterator;
+	--	iterator.objects := oclEmpty(Bag(Aggregate));
+	-- 	for n in self.numObjects do
+	--		ca := new ConcreteAggregate;
+	--		iterator.objects->including(ca);
+	--	end 	
+	end
+
 end
 
-class Iterator 
+abstract class Iterator 
 attributes
-	hasNext: Boolean
+	hasNext: Boolean;
+	--objects: Collection(Aggregate);
 
 operations
 	next() : Aggregate
 	hasNext() : Boolean
+
 end
 
 class ConcreteIterator < Iterator
 attributes
-	name : String
-	--hasNext: Boolean
+	name : String;
+	
 operations
-	next() : ConcreteAggregate 
+	next() : ConcreteAggregate
 	hasNext() : Boolean
+	
+	beginIterate() : Aggregate
 	begin
+	--	for o in self.objects do
+	--		result := o;
+	--	end
 	end
 end
 
 class Client
---attributes
---operations		
+attributes 
+	name : String init : 'Clem'
+operations		
 end
 
 -- associations
