@@ -4,7 +4,6 @@ model Iterator
 
 abstract class Aggregate
 attributes
-	numObjects: Real init : 10
 operations
 	createIterator()
 	
@@ -12,17 +11,25 @@ end
 
 class ConcreteAggregate < Aggregate
 attributes
-	name : String init : 'Collecton'
+	name : String init : 'Collection';
+	-- items: collection -> Set(Integer);
 operations
 	createIterator() --: ConcreteIterator
 
 	begin
-	--	declare iterator : Iterator;
+		declare iterator : Iterator;
 	--	iterator.objects := oclEmpty(Bag(Aggregate));
 	-- 	for n in self.numObjects do
 	--		ca := new ConcreteAggregate;
 	--		iterator.objects->including(ca);
 	--	end 	
+	end
+	
+	beginIterate() : Aggregate
+	begin
+	--	for o in self.objects do
+	--		result := o;
+	--	end
 	end
 
 end
@@ -46,12 +53,6 @@ operations
 	next() : ConcreteAggregate
 	hasNext() : Boolean
 	
-	beginIterate() : Aggregate
-	begin
-	--	for o in self.objects do
-	--		result := o;
-	--	end
-	end
 end
 
 class Client
@@ -73,8 +74,8 @@ association clientIt between
 end
 
 association creates between
-	ConcreteAggregate [0..1] role collection
-	ConcreteIterator [0..1] role iter
+	ConcreteAggregate [1] role collection
+	ConcreteIterator [1] role iter
 end
 
 -- constraints
