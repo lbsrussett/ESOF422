@@ -10,19 +10,19 @@
         <showrolenames>true</showrolenames>
         <showgrid>false</showgrid>
     </diagramOptions>
-    <node id="Aggregate1" sizeCalculated="true" type="Class">
-        <name>Aggregate1</name>
+    <node id="ConcreteAggregate" sizeCalculated="true" type="Class">
+        <name>ConcreteAggregate</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>556.5671204573241</x>
-            <y>358.0</y>
+            <x>545.0</x>
+            <y>243.0</y>
         </strategy>
         <hidden>false</hidden>
     </node>
-    <node id="Iterator1" sizeCalculated="true" type="Class">
-        <name>Iterator1</name>
+    <node id="ConcreteIterator" sizeCalculated="true" type="Class">
+        <name>ConcreteIterator</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>31.362018392781863</x>
-            <y>350.0</y>
+            <x>11.0</x>
+            <y>235.0</y>
         </strategy>
         <hidden>false</hidden>
     </node>
@@ -71,19 +71,6 @@
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="clientIt::source::rolename"
-                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
-                <name>client</name>
-                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
-                    <userOffsetX>11.0</userOffsetX>
-                    <userOffsetY>22.0</userOffsetY>
-                    <attached>clientIt::WayPoint::0</attached>
-                    <offset_x>8</offset_x>
-                    <offset_y>8</offset_y>
-                    <placement>TOP</placement>
-                </strategy>
-                <hidden>false</hidden>
-            </edgeproperty>
             <edgeproperty id="clientIt::source::multiplicity"
                 sizeCalculated="true" type="multiplicity"
                 userDefined="true" visible="true">
@@ -98,13 +85,13 @@
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="clientIt::target::rolename"
+            <edgeproperty id="clientIt::source::rolename"
                 sizeCalculated="true" type="rolename" userDefined="true" visible="true">
-                <name>iter</name>
+                <name>client</name>
                 <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
-                    <userOffsetX>9.0</userOffsetX>
-                    <userOffsetY>17.0</userOffsetY>
-                    <attached>clientIt::WayPoint::1</attached>
+                    <userOffsetX>11.0</userOffsetX>
+                    <userOffsetY>22.0</userOffsetY>
+                    <attached>clientIt::WayPoint::0</attached>
                     <offset_x>8</offset_x>
                     <offset_y>8</offset_y>
                     <placement>TOP</placement>
@@ -122,6 +109,19 @@
                     <offset_x>8</offset_x>
                     <offset_y>8</offset_y>
                     <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="clientIt::target::rolename"
+                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
+                <name>iter</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>9.0</userOffsetX>
+                    <userOffsetY>17.0</userOffsetY>
+                    <attached>clientIt::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
@@ -175,19 +175,6 @@
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="clientAg::source::rolename"
-                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
-                <name>client</name>
-                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
-                    <userOffsetX>1.0</userOffsetX>
-                    <userOffsetY>25.0</userOffsetY>
-                    <attached>clientAg::WayPoint::0</attached>
-                    <offset_x>8</offset_x>
-                    <offset_y>8</offset_y>
-                    <placement>TOP</placement>
-                </strategy>
-                <hidden>false</hidden>
-            </edgeproperty>
             <edgeproperty id="clientAg::source::multiplicity"
                 sizeCalculated="true" type="multiplicity"
                 userDefined="true" visible="true">
@@ -199,6 +186,19 @@
                     <offset_x>8</offset_x>
                     <offset_y>8</offset_y>
                     <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="clientAg::source::rolename"
+                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
+                <name>client</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>1.0</userOffsetX>
+                    <userOffsetY>25.0</userOffsetY>
+                    <attached>clientAg::WayPoint::0</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
@@ -259,8 +259,8 @@
         <hidden>false</hidden>
     </edge>
     <edge type="BinaryEdge">
-        <source>Aggregate1</source>
-        <target>Iterator1</target>
+        <source>ConcreteAggregate</source>
+        <target>ConcreteIterator</target>
         <name>creates</name>
         <properties>
             <edgeproperty id="creates::AssociationName"
@@ -279,19 +279,6 @@
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="creates::source::rolename"
-                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
-                <name>collection</name>
-                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
-                    <userOffsetX>4.0</userOffsetX>
-                    <userOffsetY>14.0</userOffsetY>
-                    <attached>creates::WayPoint::0</attached>
-                    <offset_x>8</offset_x>
-                    <offset_y>8</offset_y>
-                    <placement>TOP</placement>
-                </strategy>
-                <hidden>false</hidden>
-            </edgeproperty>
             <edgeproperty id="creates::source::multiplicity"
                 sizeCalculated="true" type="multiplicity"
                 userDefined="true" visible="true">
@@ -306,13 +293,13 @@
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="creates::target::rolename"
+            <edgeproperty id="creates::source::rolename"
                 sizeCalculated="true" type="rolename" userDefined="true" visible="true">
-                <name>iter</name>
+                <name>collection</name>
                 <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
-                    <userOffsetX>8.0</userOffsetX>
-                    <userOffsetY>12.0</userOffsetY>
-                    <attached>creates::WayPoint::1</attached>
+                    <userOffsetX>4.0</userOffsetX>
+                    <userOffsetY>14.0</userOffsetY>
+                    <attached>creates::WayPoint::0</attached>
                     <offset_x>8</offset_x>
                     <offset_y>8</offset_y>
                     <placement>TOP</placement>
@@ -330,6 +317,19 @@
                     <offset_x>8</offset_x>
                     <offset_y>8</offset_y>
                     <placement>BOTTOM</placement>
+                </strategy>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="creates::target::rolename"
+                sizeCalculated="true" type="rolename" userDefined="true" visible="true">
+                <name>iter</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToAttached">
+                    <userOffsetX>8.0</userOffsetX>
+                    <userOffsetY>12.0</userOffsetY>
+                    <attached>creates::WayPoint::1</attached>
+                    <offset_x>8</offset_x>
+                    <offset_y>8</offset_y>
+                    <placement>TOP</placement>
                 </strategy>
                 <hidden>false</hidden>
             </edgeproperty>
@@ -363,13 +363,13 @@
         <hidden>false</hidden>
     </edge>
     <edge type="Generalization">
-        <source>Aggregate1</source>
-        <target>Aggregate</target>
+        <source>ConcreteIterator</source>
+        <target>Iterator</target>
         <name>Inheritance</name>
         <properties/>
         <waypoints>
             <edgeproperty
-                id="Generalization::Aggregate1::Aggregate::WayPoint::0"
+                id="Generalization::ConcreteIterator::Iterator::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>0</name>
@@ -382,7 +382,7 @@
                 <hidden>false</hidden>
             </edgeproperty>
             <edgeproperty
-                id="Generalization::Aggregate1::Aggregate::WayPoint::1"
+                id="Generalization::ConcreteIterator::Iterator::WayPoint::1"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>1</name>
@@ -398,13 +398,13 @@
         <hidden>false</hidden>
     </edge>
     <edge type="Generalization">
-        <source>Iterator1</source>
-        <target>Iterator</target>
+        <source>ConcreteAggregate</source>
+        <target>Aggregate</target>
         <name>Inheritance</name>
         <properties/>
         <waypoints>
             <edgeproperty
-                id="Generalization::Iterator1::Iterator::WayPoint::0"
+                id="Generalization::ConcreteAggregate::Aggregate::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>0</name>
@@ -417,7 +417,7 @@
                 <hidden>false</hidden>
             </edgeproperty>
             <edgeproperty
-                id="Generalization::Iterator1::Iterator::WayPoint::1"
+                id="Generalization::ConcreteAggregate::Aggregate::WayPoint::1"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>1</name>
