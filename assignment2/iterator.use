@@ -42,14 +42,30 @@ end
 
 class ConcreteIterator < Iterator
 attributes
+	name : String
 	collection : Set(Object)
-	position : Integer
+	position : Integer init : 0
 operations
-	addSet(objectSet : Set(Object))
+	addSet(objectSet : Set(Object)) --consider adding to initialization of class somehow
 	begin
 		declare collection:Set(Object);
 		collection := objectSet;
 	end
+	
+	hasNext() --:Boolean
+	begin
+		declare collection:Set(Object), position:Integer;
+		--result := collection.size() > position
+	end
+	
+	next() -- :Integer
+	begin
+		declare collection:Set(Object), position:Integer;
+	--	result := collection[position];
+		position := position + 1;
+
+	end
+	
 end
 
 association creates between
@@ -57,13 +73,28 @@ association creates between
 	ConcreteIterator [0..1] role iterator
 end
 
-association uses between
+association clientIt between
 	Client [0..*] role client
 	Iterator [0..*] role iterator
 	
 end
 
-association objects between
+association clientAg between
 	Client [0..*] role client
 	Aggregate [0..*] role collection
 end
+
+constraints
+
+context ConcreteAggregate::createIterator()
+ 	pre createIterPre: not iterator.isDefined()
+ 	post createIterPost: iterator.isDefined()
+ 
+ context ConcreteIterator::next(): ConcreteAggregate
+ 	pre nextPre: hasNext = true
+ 	--post: none
+ 	
+context ConcreteIterator::hasNext(): Boolean
+ 	pre hasNextPre: collection.isDefined()
+ 	--post: none
+ 
