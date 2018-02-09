@@ -1,5 +1,4 @@
 !create ca1 : ConcreteAggregate
-!set ca1.numObjects := 5
 !set ca1.name := 'Movies'
 !create it1 := ca1.createIterator()
 !insert(ca1, it1) into creates
@@ -15,3 +14,4 @@
 !create se1 : Set(mo1, mo2, mo3, mo4, mo5)
 !set ca1.collection := se1
 !it1.addSet(se1)
+!if it1.hasNext() 

@@ -29,14 +29,14 @@ end
 
 class ConcreteAggregate < Aggregate
 attributes
-	collection : Set(Object)
+	name:String
+	collection:Set(Object)
 operations
 	createIterator()
 	begin
 		declare iterator:ConcreteIterator, collection:Set(Object);
 		iterator := new ConcreteIterator;
 		iterator.addSet(collection);
-		
 	end
 end
 
@@ -52,10 +52,10 @@ operations
 		collection := objectSet;
 	end
 	
-	hasNext() --:Boolean
+	hasNext() 	--:Boolean
 	begin
 		declare collection:Set(Object), position:Integer;
-		--result := collection.size() > position
+		--result := collection->size() > position
 	end
 	
 	next() -- :Integer
@@ -88,13 +88,15 @@ constraints
 
 context ConcreteAggregate::createIterator()
  	pre createIterPre: not iterator.isDefined()
+ 	--pre preCollection: collection.isDefined()
  	post createIterPost: iterator.isDefined()
  
- context ConcreteIterator::next(): ConcreteAggregate
- 	pre nextPre: hasNext = true
+ --Some error with return values is giving a null pointer with java
+ --context ConcreteIterator::next(): ConcreteAggregate
+ 	--pre nextPre: hasNext = true
  	--post: none
  	
-context ConcreteIterator::hasNext(): Boolean
- 	pre hasNextPre: collection.isDefined()
+--context ConcreteIterator::hasNext(): Boolean
+ 	--pre hasNextPre: collection.isDefined()
  	--post: none
  
