@@ -2,14 +2,16 @@ model Iterator
 
 -- classes
 
-class Object
+class Item
 attributes
+	type:String;
 operations
+
 end
 
 class Client
 attributes
-	name : String init: 'Steve'
+	name : String; 
 operations
 end
 
@@ -17,7 +19,6 @@ abstract class Aggregate
 attributes
 operations
 	createIterator()
-	
 end
 
 abstract class Iterator
@@ -29,41 +30,39 @@ end
 
 class ConcreteAggregate < Aggregate
 attributes
-	name:String
-	collection:Set(Object)
+	name:String;
+	collection:Set(Item);
 operations
 	createIterator()
 	begin
-		declare iterator:ConcreteIterator, collection:Set(Object);
-		iterator := new ConcreteIterator;
-		iterator.addSet(collection);
+		--declare iterator:ConcreteIterator; 
+		--iterator := ConcreteIterator;
 	end
 end
 
 class ConcreteIterator < Iterator
 attributes
-	name : String
-	collection : Set(Object)
-	position : Integer init : 0
+	name : String;
+	--collection : Set(Item);
+	position : Integer init : 0;
+	hasNext : Boolean init : true;
 operations
-	addSet(objectSet : Set(Object)) --consider adding to initialization of class somehow
+	--addSet(objectSet : Set(Item)) --consider adding to initialization of class somehow
+	--begin
+	--	declare collection:Set(Item);
+	--	collection := objectSet;
+	--end
+	
+	hasNext():Boolean
 	begin
-		declare collection:Set(Object);
-		collection := objectSet;
+		--result:=hasNext;
 	end
 	
-	hasNext() 	--:Boolean
+	next()
 	begin
-		declare collection:Set(Object), position:Integer;
-		--result := collection->size() > position
-	end
-	
-	next() -- :Integer
-	begin
-		declare collection:Set(Object), position:Integer;
+		--declare collection:Set(Object), position:Integer;
 	--	result := collection[position];
-		position := position + 1;
-
+		--position := position + 1;
 	end
 	
 end
@@ -71,6 +70,11 @@ end
 association creates between
 	ConcreteAggregate [1] role aggregate
 	ConcreteIterator [0..1] role iterator
+end
+
+association collection between
+	Item[0..*] role item
+	ConcreteAggregate[1] role aggregate
 end
 
 association clientIt between
@@ -81,20 +85,19 @@ end
 
 association clientAg between
 	Client [0..*] role client
-	Aggregate [0..*] role collection
+	Aggregate [0..*] role aggregate
 end
 
 constraints
 
-context ConcreteAggregate::createIterator()
- 	pre createIterPre: not iterator.isDefined()
+--context ConcreteAggregate::createIterator()
+ 	--pre createIterPre: not iterator.isDefined()
  	--pre preCollection: collection.isDefined()
- 	post createIterPost: iterator.isDefined()
+ 	--post createIterPost: iterator.isDefined()
  
- --Some error with return values is giving a null pointer with java
  --context ConcreteIterator::next(): ConcreteAggregate
- 	--pre nextPre: hasNext = true
- 	--post: none
+-- 	pre nextPre: hasNext = true
+-- 	post: none
  	
 --context ConcreteIterator::hasNext(): Boolean
  	--pre hasNextPre: collection.isDefined()

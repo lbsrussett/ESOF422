@@ -9,7 +9,7 @@ operations
 	createIterator()
 end
 
-class Aggregate1 < Aggregate
+class ConcreteAggregate < Aggregate
 attributes
 	name : String
 operations
@@ -24,7 +24,7 @@ operations
 	hasNext() : Boolean
 end
 
-class Iterator1 < Iterator
+class ConcreteIterator < Iterator
 attributes
 	name : String
 operations

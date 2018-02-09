@@ -2,59 +2,84 @@ model Iterator
 
 -- classes
 
-abstract class Aggregate
+class Item
 attributes
+	type : String
+operations
+end
+
+class Aggregate
+-- attributes
+	
 operations
 	createIterator()
-	
+	begin
+		declare iterator:ConcreteIterator; 
+		iterator := new ConcreteIterator;
+	end
 end
 
 class ConcreteAggregate < Aggregate
 attributes
-	name : String init : 'Collection';
-	numObjects : Real init : 0
-	items: Set(Item);
+	name : String;
+	set : Bag(Item);
+	numItems : Real
 operations
-
-createIterator() : Iterator
-
+	createIterator()
 	begin
+		declare iterator:ConcreteIterator;
+		iterator:= new ConcreteIterator;
+	end
+
+	addToSet()	
+	begin
+		declare anItem:Item;
+		self.numItems:=self.set->size();
+		for s in self.set do
+			anItem:= new Item;
+			insert(anItem, self) into collection;
+		end
 	end
 end
 
-class Item 
-attributes
-	name : String;
-end
-
-abstract class Iterator 
-attributes
-	hasNext: Boolean;
-	objects: Set(Aggregate);
+class Iterator 
+-- attributes
 
 operations
 	next() : Aggregate
 	hasNext() : Boolean
-
 end
 
 class ConcreteIterator < Iterator
 attributes
 	name : String;
-	
+	iterator : Iterator;
 operations
-	next() : ConcreteAggregate
+	next() : ConcreteAggregate 
 	hasNext() : Boolean
-	
+	getIterator() : Iterator
+	begin
+		result:=self.iterator;
+	end
 end
 
 class Client
-attributes 
-	name : String init : 'Clem'
+attributes
+	name : String;
 operations		
 end
 
 -- associations
+
+association creates between
+	ConcreteAggregate [1] role aggregate
+	ConcreteIterator [0..1] role iterator
+end
+
+association collection between
+	Item[0..*] role item
+	ConcreteAggregate[1] role aggregate
+end
 
 association clientAg between
 	Client [1] role client
@@ -66,23 +91,17 @@ association clientIt between
 	Iterator [1] role iter
 end
 
-association creates between
-	ConcreteAggregate [1] role collection
-	ConcreteIterator [1] role iter
-end
-
--- constraints
-
 constraints
 
-context ConcreteAggregate::createIterator()
-	pre createIterPre: not Iterator.isDefined()
-	post createIterPost: Iterator.isDefined()
-
-context ConcreteIterator::next(): ConcreteAggregate
-	pre nextPre: hasNext = true
-	--post: none
-
+--context ConcreteAggregate::createIterator()
+ 	--pre createIterPre: not iterator.isDefined()
+ 	--pre preCollection: collection.isDefined()
+ 	--post createIterPost: iterator.isDefined()
+ 
+ --context ConcreteIterator::next(): ConcreteAggregate
+-- 	pre nextPre: hasNext = true
+-- 	post: none
+ 	
 --context ConcreteIterator::hasNext(): Boolean
-	--pre hasNextPre: collection.isDefined()
-	--post: none
+ 	--pre hasNextPre: collection.isDefined()
+ 	--post: none

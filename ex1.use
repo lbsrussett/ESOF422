@@ -1,0 +1,45 @@
+model ExampleOne
+
+-- classes
+
+class Person
+attributes
+	name: String
+	age: Integer
+	salary: Real
+operations
+	raiseSalary(rate: Real): Real
+end
+
+class Company
+attributes
+	name: String
+	location: String
+operations
+	hire(p: Person)
+		
+	fire(p: Person)
+end
+
+association WorksFor between
+	Person [0..*] role employee
+	Company [0..1] role employer
+end
+
+--constraints
+
+constraints
+context Company::hire(p: Person)
+	pre hirePre1: p.isDefined
+	pre hirePre2: employee->excludes(p)
+	post hirePost: employee->includes(p)
+
+context Company::fire(p: Person)
+	pre firePre: employee->includes(p)
+	post firePost: employee->excludes(p)
+
+context Person::raiseSalary(rate: Real): Real
+	post raiseSalaryPost:
+		salary = salary@pre * (1.0 + rate)
+	post resultPost:
+		result = salary

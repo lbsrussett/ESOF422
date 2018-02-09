@@ -1,0 +1,29 @@
+model RecursiveOperations
+
+-- classes
+
+class Rec
+attributes
+
+operations
+
+--OCL
+  recurse() : Integer =
+    1 + self.recurse()
+
+  fac(n : Integer) : Integer =
+    if n <= 1 then 1 else n * self.fac(n - 1) endif
+
+--SOIL
+  factorial(n : Integer) : Integer
+  begin
+	declare temp : Integer;
+	if n <= 1 then
+		result := 1
+	else
+		temp := self.factorial(n-1);
+		result := n * temp
+        end
+  end
+
+end

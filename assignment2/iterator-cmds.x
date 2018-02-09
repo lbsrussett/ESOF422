@@ -1,17 +1,24 @@
-!create ca1 : ConcreteAggregate
-!set ca1.name := 'Movies'
-!create it1 := ca1.createIterator()
-!insert(ca1, it1) into creates
+!create ca:ConcreteAggregate
+!set ca.name := 'Movies'
 !create client : Client
-!insert(client, it1) into clientIt
-!insert(client, ca1) into clientAg
-!set iterator.name := 'MovieIterator'
-!create mo1 : Object
-!create mo2 : Object
-!create mo3 : Object
-!create mo4 : Object
-!create mo5 : Object
-!create se1 : Set(mo1, mo2, mo3, mo4, mo5)
-!set ca1.collection := se1
-!it1.addSet(se1)
-!if it1.hasNext() 
+!set client.name := "Clem"
+!insert(client, it) into clientIt
+!insert(client, ca) into clientAg
+!set it.name := 'MovieIterator'
+!create mo1 : Item
+!set mo1.type := 'Movie1'
+!create mo2 : Item
+!set mo1.type := 'Movie2'
+!create mo3 : Item
+!set mo1.type := 'Movie3'
+!create mo4 : Item
+!set mo1.type := 'Movie4'
+!create mo5 : Item
+!set mo1.type := 'Movie5'
+!insert(mo1, ca) into collection
+!insert(mo2, ca) into collection
+!insert(mo3, ca) into collection
+!insert(mo4, ca) into collection
+!insert(mo5, ca) into collection
+!ca.addToSet();
+!ca.createIterator();
