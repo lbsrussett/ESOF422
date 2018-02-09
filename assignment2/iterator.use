@@ -12,13 +12,24 @@ end
 class ConcreteAggregate < Aggregate
 attributes
 	name : String init : 'Collection';
-	-- items: collection -> Set(Integer);
+	items: Set(Aggregate);
 operations
-	createIterator() --: ConcreteIterator
+	createSet(n : Real) : Set(Aggregate)
+		begin
+		declare x : Real;
+			x = 0;
+			if x < n then
+				a := new Aggregate;
+				items := including(a);
+				x := x+1;
+			end
+		end
+
+	createIterator() : Iterator
 
 	begin
 		declare iterator : Iterator;
-	--	iterator.objects := oclEmpty(Bag(Aggregate));
+		iterator.objects := self.items;
 	-- 	for n in self.numObjects do
 	--		ca := new ConcreteAggregate;
 	--		iterator.objects->including(ca);
@@ -37,7 +48,7 @@ end
 abstract class Iterator 
 attributes
 	hasNext: Boolean;
-	--objects: Collection(Aggregate);
+	objects: Set(Aggregate);
 
 operations
 	next() : Aggregate
@@ -81,6 +92,10 @@ end
 -- constraints
 
 constraints
+
+--context ConcreteAggregate::items : Set(Aggregate) 
+--init: Set{};
+
 context ConcreteAggregate::createIterator()
 	pre createIterPre: not iter.isDefined()
 	post createIterPost: iter.isDefined()
