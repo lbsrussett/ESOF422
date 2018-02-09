@@ -12,18 +12,20 @@ end
 class ConcreteAggregate < Aggregate
 attributes
 	name : String init : 'Collection';
-	items: Set(Aggregate);
+	numObjects : Real init : 0
+	items: Set(Item);
 operations
-	createSet(n : Real) : Set(Aggregate)
+	addToSet() : Set(Item)
 		begin
-		declare x : Real;
-			x = 0;
-			if x < n then
-				a := new Aggregate;
-				items := including(a);
-				x := x+1;
+			self.numObjects:=self.items->size();
+			for i in self.items do 
+				item:=new Item;
+				self:=items->including(item);
 			end
-		end
+			end
+			result:=self.items;
+		--end
+	end
 
 	createIterator() : Iterator
 
@@ -43,6 +45,11 @@ operations
 	--	end
 	end
 
+end
+
+class Item 
+attributes
+	name : String;
 end
 
 abstract class Iterator 
