@@ -2,6 +2,17 @@ model Iterator
 
 -- classes
 
+class Object
+attributes
+operations
+end
+
+class Client
+attributes
+	name : String init: 'Steve'
+operations
+end
+
 abstract class Aggregate
 attributes
 operations
@@ -9,111 +20,50 @@ operations
 	
 end
 
+abstract class Iterator
+attributes
+operations
+	hasNext()
+	next()
+end
+
 class ConcreteAggregate < Aggregate
 attributes
-	name : String init : 'Collection';
-	numObjects : Real init : 0
-	items: Set(Item);
+	collection : Set(Object)
 operations
-	addToSet() : Set(Item)
-		begin
-			self.numObjects:=self.items->size();
-			for i in self.items do 
-				item:=new Item;
-				self:=items->including(item);
-			end
-			end
-			result:=self.items;
-		--end
-	end
-
-	createIterator() : Iterator
-
+	createIterator()
 	begin
-		declare iterator : Iterator;
-		iterator.objects := self.items;
-	-- 	for n in self.numObjects do
-	--		ca := new ConcreteAggregate;
-	--		iterator.objects->including(ca);
-	--	end 	
+		declare iterator:ConcreteIterator, collection:Set(Object);
+		iterator := new ConcreteIterator;
+		iterator.addSet(collection);
+		
 	end
-	
-	beginIterate() : Aggregate
-	begin
-	--	for o in self.objects do
-	--		result := o;
-	--	end
-	end
-
-end
-
-class Item 
-attributes
-	name : String;
-end
-
-abstract class Iterator 
-attributes
-	hasNext: Boolean;
-	objects: Set(Aggregate);
-
-operations
-	next() : Aggregate
-	hasNext() : Boolean
-
 end
 
 class ConcreteIterator < Iterator
 attributes
-	name : String;
-	
+	collection : Set(Object)
+	position : Integer
 operations
-	next() : ConcreteAggregate
-	hasNext() : Boolean
-	
-end
-
-class Client
-attributes 
-	name : String init : 'Clem'
-operations		
-end
-
--- associations
-
-association clientAg between
-	Client [1] role client
-	Aggregate [1] role agg
-end
-
-association clientIt between
-	Client [1] role client
-	Iterator [1] role iter
+	addSet(objectSet : Set(Object))
+	begin
+		declare collection:Set(Object);
+		collection := objectSet;
+	end
 end
 
 association creates between
-	ConcreteAggregate [1] role collection
-	ConcreteIterator [1] role iter
+	ConcreteAggregate [1] role aggregate
+	ConcreteIterator [0..1] role iterator
 end
 
--- constraints
+association uses between
+	Client [0..*] role client
+	Iterator [0..*] role iterator
+	
+end
 
-constraints
-
---context ConcreteAggregate::items : Set(Aggregate) 
---init: Set{};
-
-context ConcreteAggregate::createIterator()
-	pre createIterPre: not iter.isDefined()
-	post createIterPost: iter.isDefined()
-
---not sure how to make condition based on operation value
-context ConcreteIterator::next(): ConcreteAggregate
-	pre nextPre: hasNext = true
-	--post: none
-
-context ConcreteIterator::hasNext(): Boolean
-	pre hasNextPre: collection.isDefined()
-	--post: none
-
-
+association objects between
+	Client [0..*] role client
+	Aggregate [0..*] role collection
+end
