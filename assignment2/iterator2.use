@@ -1,0 +1,87 @@
+model Iterator
+
+-- classes
+
+abstract class Aggregate
+attributes
+operations
+	createIterator()
+	
+end
+
+class ConcreteAggregate < Aggregate
+attributes
+	name : String init : 'Collection';
+	numObjects : Real init : 0
+	items: Set(Item);
+operations
+
+createIterator() : Iterator
+
+	begin
+	end
+
+class Item 
+attributes
+	name : String;
+end
+
+abstract class Iterator 
+attributes
+	hasNext: Boolean;
+	objects: Set(Aggregate);
+
+operations
+	next() : Aggregate
+	hasNext() : Boolean
+
+end
+
+class ConcreteIterator < Iterator
+attributes
+	name : String;
+	
+operations
+	next() : ConcreteAggregate
+	hasNext() : Boolean
+	
+end
+
+class Client
+attributes 
+	name : String init : 'Clem'
+operations		
+end
+
+-- associations
+
+association clientAg between
+	Client [1] role client
+	Aggregate [1] role agg
+end
+
+association clientIt between
+	Client [1] role client
+	Iterator [1] role iter
+end
+
+association creates between
+	ConcreteAggregate [1] role collection
+	ConcreteIterator [1] role iter
+end
+
+-- constraints
+
+constraints
+
+context ConcreteAggregate::createIterator()
+	pre createIterPre: not iter.isDefined()
+	post createIterPost: iter.isDefined()
+
+context ConcreteIterator::next(): ConcreteAggregate
+	pre nextPre: hasNext = true
+	--post: none
+
+context ConcreteIterator::hasNext(): Boolean
+	pre hasNextPre: collection.isDefined()
+	--post: none
