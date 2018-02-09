@@ -20,6 +20,7 @@ createIterator() : Iterator
 
 	begin
 	end
+end
 
 class Item 
 attributes
@@ -75,13 +76,13 @@ end
 constraints
 
 context ConcreteAggregate::createIterator()
-	pre createIterPre: not iter.isDefined()
-	post createIterPost: iter.isDefined()
+	pre createIterPre: not Iterator.isDefined()
+	post createIterPost: Iterator.isDefined()
 
 context ConcreteIterator::next(): ConcreteAggregate
 	pre nextPre: hasNext = true
 	--post: none
 
-context ConcreteIterator::hasNext(): Boolean
-	pre hasNextPre: collection.isDefined()
+--context ConcreteIterator::hasNext(): Boolean
+	--pre hasNextPre: collection.isDefined()
 	--post: none
