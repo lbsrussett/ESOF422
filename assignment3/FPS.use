@@ -1,0 +1,186 @@
+model Game
+
+enum Transition {neutral, attack, panic, die}
+
+--classes
+
+abstract class ShooterState
+operations
+	action(t:Transition)
+	begin
+	end
+
+	endGame()
+	begin
+	end
+
+	startOver()
+	begin
+	end
+end
+
+class inNeutral < ShooterState
+operations
+	action(t:Transition)
+	begin
+		if(t = 'panic') then
+			--self.Shooter.shooterState := self.Shooter.panicState;
+		end;
+
+		if(t = 'attack') then
+			--self.Shooter.shooterState := self.Shooter.attackState;
+		end;
+	end
+
+	endGame()
+	begin
+	end
+
+	startOver()
+	begin
+	end
+end
+
+class inAttack < ShooterState
+operations
+	action(t:Transition)
+	begin
+		if(t = 'neutral') then
+			--self.Shooter.shooterState := self.Shooter.neutralState;
+		end;
+
+		if(t = 'die') then
+			--self.Shooter.shooterState := self.Shooter.dieState;
+		end;
+	end
+
+	endGame()
+	begin
+	end
+
+	startOver()
+	begin
+	end
+end
+
+class inPanic < ShooterState
+operations
+	action(t:Transition)
+	begin
+		if(t = 'neutral') then
+			--self.Shooter.shooterState := self.Shooter.neutralState;
+		end;
+
+		if(t = 'die') then
+			--self.Shooter.shooterState := self.Shooter.dieState;
+		end;
+	end
+
+	endGame()
+	begin
+	end
+
+	startOver()
+	begin
+	end
+end
+
+class inDie < ShooterState
+operations
+	action(t:Transition)
+	begin
+	end
+
+	endGame()
+	begin
+	end
+
+	startOver()
+	begin
+	end
+end
+
+class Shooter
+attributes
+	alive : Boolean
+	health : Real 
+	strength : Real 
+	shooterState : ShooterState
+	neutralState : ShooterState
+	attackState : ShooterState
+	panicState : ShooterState
+	dieState : ShooterState
+operations
+initInstance()
+    begin
+       self.health := 100;
+       self.strength := 1.0;
+	   self.neutralState := new inNeutral;
+	   self.attackState := new inAttack;
+	   self.panicState := new inPanic;
+	   self.dieState := new inDie;
+	   
+       self.shooterState := self.neutralState; -- we start in the inNeutral state
+    end
+	seeOpponent() : Real
+	begin
+		result:=self.strength;
+	end
+	attack()
+	panic()
+	receiveBlow(blow : Real)
+		begin
+			self.health:=(self.health-blow);
+		end
+	lostOpponent()
+		begin
+			self.health:=100;
+		end
+	die()
+		begin
+			self.health:=0;
+		end
+	neutral()
+
+statemachines
+	psm StatePattern
+		states
+		    startUp:initial
+			neutral       [shooterState = neutralState]
+			attack        [shooterState = attackState]
+			panic         [shooterState = panicState]
+			die 		  [shooterState = dieState]
+	    transitions
+		    startUp -> neutral {create}
+			neutral -> panic {[strength = 1] seeOpponent()}
+			neutral -> attack {[strength = 0] seeOpponent()}
+			attack -> neutral {lostOpponent()}
+			attack -> die {[blow = 100 and health = 0] receiveBlow()}
+			panic -> die {[blow = 100 and health = 0] receiveBlow()}
+			panic -> neutral {lostOpponent()}
+	 end
+
+	psm Play
+	states
+		startUp:initial
+		neutral  [health > 0]
+		panic  [health > 0]
+		attack  [health > 0]
+		die  [health = 0]
+
+	transitions
+		startUp -> neutral {create}
+		neutral -> panic {[strength = 1] seeOpponent()}
+		neutral -> attack {[strength = 0] seeOpponent()}
+		attack -> neutral {lostOpponent()}
+		attack -> die {[blow = 100 and health = 0] receiveBlow()}
+		panic -> die {[blow = 100 and health = 0] receiveBlow()}
+		panic -> neutral {lostOpponent()}
+	end
+end	
+
+-- associations
+association shooterState between
+ ShooterState[1]
+ Shooter[1]
+end
