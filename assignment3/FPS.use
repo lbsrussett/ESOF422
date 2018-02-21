@@ -23,11 +23,11 @@ class inNeutral < ShooterState
 operations
 	action(t:Transition)
 	begin
-		if(t = 'panic') then
+		if(t = Transition::panic) then
 			--self.Shooter.shooterState := self.Shooter.panicState;
 		end;
 
-		if(t = 'attack') then
+		if(t = Transition::attack) then
 			--self.Shooter.shooterState := self.Shooter.attackState;
 		end;
 	end
@@ -45,11 +45,11 @@ class inAttack < ShooterState
 operations
 	action(t:Transition)
 	begin
-		if(t = 'neutral') then
+		if(t = Transition::neutral) then
 			--self.Shooter.shooterState := self.Shooter.neutralState;
 		end;
 
-		if(t = 'die') then
+		if(t = Transition::die) then
 			--self.Shooter.shooterState := self.Shooter.dieState;
 		end;
 	end
@@ -67,11 +67,11 @@ class inPanic < ShooterState
 operations
 	action(t:Transition)
 	begin
-		if(t = 'neutral') then
+		if(t = Transition::neutral) then
 			--self.Shooter.shooterState := self.Shooter.neutralState;
 		end;
 
-		if(t = 'die') then
+		if(t = Transition::die) then
 			--self.Shooter.shooterState := self.Shooter.dieState;
 		end;
 	end
