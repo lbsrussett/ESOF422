@@ -100,11 +100,19 @@ operations
 	end
 end
 
+class Weapon
+attributes
+	name : String
+	capacity : Integer
+end
+
+
 class Shooter
 attributes
 	alive : Boolean
 	health : Real init : 100
 	strength : Real 
+	weapons : Sequence(Weapon) 
 	neutralState : ShooterState
 	attackState : ShooterState
 	panicState : ShooterState
@@ -122,6 +130,16 @@ initInstance()
 	   
        self.shooterState := self.neutralState; -- we start in the inNeutral state
     end
+
+    addWeapon(weapon:String, bullets:Integer)
+    begin
+    	declare w:Weapon;
+    	w := new Weapon;
+    	w.name := weapon;
+    	w.capacity := bullets;
+    	self.weapons := self.weapons->append(w);
+    end
+
 	seeOpponent() : Real
 	begin
 		result:=self.strength;
@@ -183,5 +201,10 @@ end
 association shooterState between
  ShooterState[1]
  Shooter[1]
+end
+
+association weapons between
+	Shooter[1]
+	Weapon[1..*]
 end
 
