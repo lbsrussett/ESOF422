@@ -24,11 +24,11 @@ operations
 	action(t:Transition)
 	begin
 		if(t = Transition::panic) then
-			--self.Shooter.shooterState := self.Shooter.panicState;
+			self.shooter.shooterState := self.shooter.panicState;
 		end;
 
 		if(t = Transition::attack) then
-			--self.Shooter.shooterState := self.Shooter.attackState;
+			self.shooter.shooterState := self.shooter.attackState;
 		end;
 	end
 
@@ -46,11 +46,11 @@ operations
 	action(t:Transition)
 	begin
 		if(t = Transition::neutral) then
-			--self.Shooter.shooterState := self.Shooter.neutralState;
+			self.shooter.shooterState := self.shooter.neutralState;
 		end;
 
 		if(t = Transition::die) then
-			--self.Shooter.shooterState := self.Shooter.dieState;
+			self.shooter.shooterState := self.shooter.dieState;
 		end;
 	end
 
@@ -68,11 +68,11 @@ operations
 	action(t:Transition)
 	begin
 		if(t = Transition::neutral) then
-			--self.Shooter.shooterState := self.Shooter.neutralState;
+			self.shooter.shooterState := self.shooter.neutralState;
 		end;
 
 		if(t = Transition::die) then
-			--self.Shooter.shooterState := self.Shooter.dieState;
+			self.shooter.shooterState := self.shooter.dieState;
 		end;
 	end
 
@@ -103,13 +103,13 @@ end
 class Shooter
 attributes
 	alive : Boolean
-	health : Real 
+	health : Real init : 100
 	strength : Real 
-	shooterState : ShooterState
 	neutralState : ShooterState
 	attackState : ShooterState
 	panicState : ShooterState
 	dieState : ShooterState
+	shooterState : ShooterState init : neutralState
 operations
 initInstance()
     begin
@@ -152,8 +152,8 @@ statemachines
 			die 		  [shooterState = dieState]
 	    transitions
 		    startUp -> neutral {create}
-			neutral -> panic {[strength = 1] seeOpponent()}
-			neutral -> attack {[strength = 0] seeOpponent()}
+			neutral -> panic {[strength = 1.0] seeOpponent()}
+			neutral -> attack {[strength = 0.0] seeOpponent()}
 			attack -> neutral {lostOpponent()}
 			attack -> die {[blow = 100 and health = 0] receiveBlow()}
 			panic -> die {[blow = 100 and health = 0] receiveBlow()}
@@ -170,8 +170,8 @@ statemachines
 
 	transitions
 		startUp -> neutral {create}
-		neutral -> panic {[strength = 1] seeOpponent()}
-		neutral -> attack {[strength = 0] seeOpponent()}
+		neutral -> panic {[strength = 1.0] seeOpponent()}
+		neutral -> attack {[strength = 0.0] seeOpponent()}
 		attack -> neutral {lostOpponent()}
 		attack -> die {[blow = 100 and health = 0] receiveBlow()}
 		panic -> die {[blow = 100 and health = 0] receiveBlow()}
@@ -184,3 +184,4 @@ association shooterState between
  ShooterState[1]
  Shooter[1]
 end
+
