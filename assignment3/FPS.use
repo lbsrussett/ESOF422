@@ -110,9 +110,9 @@ end
 
 class Shooter
 attributes
-	alive : Boolean
+	--alive : Boolean
 	health : Real init : 100
-	strength : Real 
+	--strength : Real 
 	weapons : Sequence(Weapon) 
 	neutralState : ShooterState
 	attackState : ShooterState
@@ -123,7 +123,7 @@ operations
 initInstance()
     begin
        self.health := 100;
-       self.strength := 1.0;
+       --self.strength := 1.0;
 	   self.neutralState := new inNeutral;
 	   self.attackState := new inAttack;
 	   self.panicState := new inPanic;
@@ -141,9 +141,19 @@ initInstance()
     	self.weapons := self.weapons->append(w);
     end
 
-	seeOpponent() : Real
+	seeOpponent(hlth : Real) 
 	begin
-		result:=self.strength;
+		self.health := (self.health-hlth);
+		if (self.health < 50) then
+			self.shooterState := self.panicState;
+		end;
+		if (self.health > 50) then
+			self.shooterState := self.attackState;
+		end;
+		if(self.health = 0) then
+			self.shooterState := self.dieState;
+		end;
+
 	end
 	attack()
 	begin
@@ -154,14 +164,26 @@ initInstance()
 	receiveBlow(blow : Real)
 		begin
 			self.health:=(self.health-blow);
-		end
+
+			if (self.health < 50) then
+			self.shooterState := self.panicState;
+		end;
+		if (self.health > 50) then
+			self.shooterState := self.attackState;
+		end;
+		if(self.health = 0) then
+			self.shooterState := self.dieState;
+		end;
+	end
 	lostOpponent()
 		begin
 			self.health:=100;
+			self.shooterState := self.neutralState;
 		end
 	die()
 		begin
 			self.health:=0;
+			self.shooterState := self.dieState;
 		end
 	neutral()
 
@@ -169,18 +191,18 @@ statemachines
 	psm StatePattern
 		states
 		    startUp:initial
-			neutral       [shooterState = neutralState]
-			attack        [shooterState = attackState]
-			panic         [shooterState = panicState]
-			die 		  [shooterState = dieState]
+			neutral       [shooterState = neutralState and health > 0]
+			attack        [shooterState = attackState and health > 0]
+			panic         [shooterState = panicState and health > 0]
+			die 		  [shooterState = dieState and health = 0]
 	    transitions
 		    startUp -> neutral {create}
-			neutral -> panic {[strength = 0.0] seeOpponent()} -- weapons.Empty()
-			neutral -> attack {[strength = 1.0] seeOpponent()} -- weapons.notEmpty()
-			attack -> neutral {lostOpponent()}
-			attack -> die {[health = 0] receiveBlow()}
-			panic -> die {[health = 0] receiveBlow()}
-			panic -> neutral {lostOpponent()}
+			neutral -> panic { [shooterState = neutralState] seeOpponent() [health < 50]} -- weapons.Empty()
+			neutral -> attack {[shooterState = neutralState] seeOpponent() [health > 50]} -- weapons.notEmpty()
+			attack -> neutral {[shooterState = attackState] lostOpponent()}
+			attack -> die {[health - blow = 0 and shooterState = attackState] receiveBlow()}
+			panic -> die { [shooterState = panicState] receiveBlow() [health = 0]}
+			panic -> neutral {[shooterState = panicState] lostOpponent()}
 	 end
 
 	psm Play
@@ -193,11 +215,11 @@ statemachines
 
 	transitions
 		startUp -> neutral {create}
-		neutral -> panic {[strength = 1.0] seeOpponent()}
-		neutral -> attack {[strength = 0.0] seeOpponent()}
-		attack -> neutral {lostOpponent()}
-		attack -> die {[blow = 100 and health = 0] receiveBlow()}
-		panic -> die {[blow = 100 and health = 0] receiveBlow()}
+		neutral -> panic {[health - hlth < 50] seeOpponent()}
+		neutral -> attack {[health - hlth > 50] seeOpponent()}
+		attack -> neutral {[health - blow > 0] receiveBlow()}
+		attack -> die {[health - blow = 0] receiveBlow()}
+		panic -> die {[health - blow = 0] receiveBlow()}
 		panic -> neutral {lostOpponent()}
 	end
 end	
