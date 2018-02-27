@@ -1,0 +1,78 @@
+model Database
+
+-- classes
+
+abstract class Facade
+attributes
+	database : TaxpayerDatabase;
+	encryption : DataEncryption;
+operations
+	initialize()
+		begin
+			self.database := new TaxpayerDatabase;
+			self.encryption := new DataEncryption;
+			self.database.dataEncryption := self.encryption;
+		end
+
+end
+
+class TaxpayerDatabase < Facade
+attributes
+	taxpayers : Sequence(Taxpayer);
+	dataEncryption : DataEncryption;
+operations
+	search()
+	add(name : String, ssn : Integer)
+	begin
+		declare t : Taxpayer;
+		t := new Taxpayer;
+		t.createNew(name, ssn);
+		dataEncryption.encrypt(t);
+		self.taxpayers := self.taxpayers->append(t);
+	end
+	inactivate()
+end
+
+class DataEncryption < Facade
+attributes
+	encryptScheme : String;
+operations
+	encrypt(t:Taxpayer)
+	begin
+		t.encrypted := true;
+	end
+	decrypt(t:Taxpayer)
+	begin
+		t.encrypted := false;
+	end
+end
+ 
+class Taxpayer
+attributes
+	name : String;
+	ssn : Integer;
+	address : String;
+	encrypted : Boolean init : false;
+operations
+	createNew(n : String, ss : Integer)
+	begin
+		self.name := n;
+		self.ssn := ss;
+	end
+
+	update(add : String)
+	begin
+		self.address := add;
+	end
+end
+
+-- associations
+association entry between
+	TaxpayerDatabase [1] role database
+	Taxpayer [1..*] role taxpayer
+end
+
+contraints
+
+--context Taxpayer
+--inv : 
