@@ -104,6 +104,7 @@ class Weapon
 attributes
 	name : String
 	capacity : Integer
+	ammo : Integer
 end
 
 
@@ -145,6 +146,10 @@ initInstance()
 		result:=self.strength;
 	end
 	attack()
+	begin
+		--weapons[0].ammo := weapons[0].ammo-1 --remove ammo
+	end
+	
 	panic()
 	receiveBlow(blow : Real)
 		begin
@@ -170,11 +175,11 @@ statemachines
 			die 		  [shooterState = dieState]
 	    transitions
 		    startUp -> neutral {create}
-			neutral -> panic {[strength = 1.0] seeOpponent()}
-			neutral -> attack {[strength = 0.0] seeOpponent()}
+			neutral -> panic {[strength = 0.0] seeOpponent()} -- weapons.Empty()
+			neutral -> attack {[strength = 1.0] seeOpponent()} -- weapons.notEmpty()
 			attack -> neutral {lostOpponent()}
-			attack -> die {[blow = 100 and health = 0] receiveBlow()}
-			panic -> die {[blow = 100 and health = 0] receiveBlow()}
+			attack -> die {[health = 0] receiveBlow()}
+			panic -> die {[health = 0] receiveBlow()}
 			panic -> neutral {lostOpponent()}
 	 end
 
@@ -197,6 +202,16 @@ statemachines
 	end
 end	
 
+class Map
+attributes
+end
+
+class Obstacle
+attributes
+	size: Integer
+	--position: Position
+end
+
 -- associations
 association shooterState between
  ShooterState[1]
@@ -208,3 +223,12 @@ association weapons between
 	Weapon[1..*]
 end
 
+association mapPlayers between
+	Shooter [*] role players
+	Map [1] role map
+end
+
+association obstacles between
+	Obstacle [*] role terrain
+	Map [1] role map
+end
