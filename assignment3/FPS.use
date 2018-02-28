@@ -191,14 +191,16 @@ statemachines
 	psm StatePattern
 		states
 		    startUp:initial
-			neutral       [shooterState = neutralState and health > 0]
-			attack        [shooterState = attackState and health > 0]
-			panic         [shooterState = panicState and health > 0]
-			die 		  [shooterState = dieState and health = 0]
+			neutral       [health > 0] --shooterState = neutralState and -- seems redundant
+			attack        [health > 0] --shooterState = attackState and -- do/attackOpponent
+			panic         [health > 0] --shooterState = panicState and -- do/runAway
+			die 		  [health <= 0] --shooterState = dieState and 
 	    transitions
 		    startUp -> neutral {create}
 			neutral -> panic { [shooterState = neutralState] seeOpponent() [health < 50]} -- weapons.Empty()
-			neutral -> attack {[shooterState = neutralState] seeOpponent() [health > 50]} -- weapons.notEmpty()
+			neutral -> attack {[shooterState = neutralState] seeOpponent() [health >= 50]} -- weapons.notEmpty()
+			attack -> panic {receiveBlow()[health < 50]}
+			attack -> attack {receiveBlow()[health >= 50]}
 			attack -> neutral {[shooterState = attackState] lostOpponent()}
 			attack -> die {[health - blow = 0 and shooterState = attackState] receiveBlow()}
 			panic -> die { [shooterState = panicState] receiveBlow() [health = 0]}
@@ -216,7 +218,7 @@ statemachines
 	transitions
 		startUp -> neutral {create}
 		neutral -> panic {[health - hlth < 50] seeOpponent()}
-		neutral -> attack {[health - hlth > 50] seeOpponent()}
+		neutral -> attack {[health - hlth >= 50] seeOpponent()}
 		attack -> neutral {[health - blow > 0] receiveBlow()}
 		attack -> die {[health - blow = 0] receiveBlow()}
 		panic -> die {[health - blow = 0] receiveBlow()}
