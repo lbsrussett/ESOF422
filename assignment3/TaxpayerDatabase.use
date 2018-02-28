@@ -7,10 +7,10 @@ attributes
 	database : TaxpayerDatabase;
 	encryption : DataEncryption;
 operations
-	initialize()
+	initialize(d:TaxpayerDatabase, e:DataEncryption)
 		begin
-			self.database := new TaxpayerDatabase;
-			self.encryption := new DataEncryption;
+			self.database := d;
+			self.encryption := e;
 			self.database.dataEncryption := self.encryption;
 		end
 
@@ -27,7 +27,7 @@ operations
 		declare t : Taxpayer;
 		t := new Taxpayer;
 		t.createNew(name, ssn);
-		dataEncryption.encrypt(t);
+		self.dataEncryption.encrypt(t);
 		self.taxpayers := self.taxpayers->append(t);
 	end
 	inactivate()
@@ -37,10 +37,16 @@ class DataEncryption < Facade
 attributes
 	encryptScheme : String;
 operations
+	setScheme(s:String) 
+	begin
+		self.encryptScheme := s;
+	end
+
 	encrypt(t:Taxpayer)
 	begin
 		t.encrypted := true;
 	end
+
 	decrypt(t:Taxpayer)
 	begin
 		t.encrypted := false;
@@ -72,7 +78,12 @@ association entry between
 	Taxpayer [1..*] role taxpayer
 end
 
-contraints
+-- constraints 
 
---context Taxpayer
---inv : 
+constraints
+
+context Taxpayer
+inv : self.name.size() > 0
+
+context TaxpayerDatabase
+inv: self.taxpayers->notEmpty
