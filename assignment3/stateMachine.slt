@@ -10,12 +10,22 @@
         <showrolenames>true</showrolenames>
         <showgrid>false</showgrid>
     </diagramOptions>
+    <node height="60.0" id="neutral" sizeCalculated="false"
+        type="StateNode" width="121.0">
+        <name>neutral</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>211.38805968735147</x>
+            <y>390.93219396760594</y>
+        </strategy>
+        <showInvariant>true</showInvariant>
+        <hidden>false</hidden>
+    </node>
     <node height="14.0" id="startUp" sizeCalculated="false"
         type="PseudoStateNode" width="14.0">
         <name>startUp</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>42.98704503688097</x>
-            <y>212.0</y>
+            <x>30.82566127770542</x>
+            <y>499.3671587373972</y>
         </strategy>
         <node id="startUp::StateName" sizeCalculated="true" type="StateName">
             <name>startUp</name>
@@ -35,38 +45,32 @@
         </node>
         <hidden>false</hidden>
     </node>
-    <node id="die" sizeCalculated="true" type="StateNode">
-        <name>die</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>566.6447890024192</x>
-            <y>42.85479392367941</y>
-        </strategy>
-        <showInvariant>true</showInvariant>
-        <hidden>false</hidden>
-    </node>
-    <node id="neutral" sizeCalculated="true" type="StateNode">
-        <name>neutral</name>
-        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>103.87218960662449</x>
-            <y>342.0376522283552</y>
-        </strategy>
-        <showInvariant>true</showInvariant>
-        <hidden>false</hidden>
-    </node>
-    <node id="panic" sizeCalculated="true" type="StateNode">
+    <node height="61.955078125" id="panic" sizeCalculated="false"
+        type="StateNode" width="193.0">
         <name>panic</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>121.00246018031157</x>
-            <y>29.9282319174025</y>
+            <x>728.9265534738873</x>
+            <y>298.8655842127554</y>
         </strategy>
         <showInvariant>true</showInvariant>
         <hidden>false</hidden>
     </node>
-    <node id="attack" sizeCalculated="true" type="StateNode">
+    <node height="78.955078125" id="die" sizeCalculated="false"
+        type="StateNode" width="163.0">
+        <name>die</name>
+        <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
+            <x>743.767892748119</x>
+            <y>89.09227538498581</y>
+        </strategy>
+        <showInvariant>true</showInvariant>
+        <hidden>false</hidden>
+    </node>
+    <node height="60.0" id="attack" sizeCalculated="false"
+        type="StateNode" width="113.0">
         <name>attack</name>
         <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyFixed">
-            <x>559.2127811863447</x>
-            <y>333.6810316700119</y>
+            <x>100.66803986431097</x>
+            <y>96.76524863475584</y>
         </strategy>
         <showInvariant>true</showInvariant>
         <hidden>false</hidden>
@@ -74,7 +78,7 @@
     <edge type="Transition">
         <source>panic</source>
         <target>neutral</target>
-        <name>lostOpponent()/</name>
+        <name>[(self.shooterState = self.panicState)] lostOpponent()/</name>
         <waypoints>
             <edgeproperty id="transition::panic::neutral::::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
@@ -105,14 +109,16 @@
         <Transitions>
             <Transition>
                 <trigger>lostOpponent()</trigger>
-                <guard/>
+                <guard>(self.shooterState = self.panicState)</guard>
                 <post/>
-                <edgeproperty id="lostOpponent()/" sizeCalculated="true"
-                    type="TransitionLabel" userDefined="true" visible="true">
-                    <name>lostOpponent()/</name>
+                <edgeproperty
+                    id="[(self.shooterState = self.panicState)] lostOpponent()/"
+                    sizeCalculated="true" type="TransitionLabel"
+                    userDefined="true" visible="true">
+                    <name>[(self.shooterState = self.panicState)] lostOpponent()/</name>
                     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>-53.0</userOffsetX>
-                        <userOffsetY>-69.0</userOffsetY>
+                        <userOffsetX>-3.0</userOffsetX>
+                        <userOffsetY>-29.0</userOffsetY>
                         <offsetX>0.0</offsetX>
                         <offsetY>10.0</offsetY>
                         <related length="2">
@@ -126,11 +132,12 @@
         </Transitions>
     </edge>
     <edge type="Transition">
-        <source>panic</source>
-        <target>die</target>
-        <name>[((self.health - blow) = 0)] receiveBlow(blow : Real)/</name>
+        <source>neutral</source>
+        <target>attack</target>
+        <name>[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health &gt;= 50)]</name>
         <waypoints>
-            <edgeproperty id="transition::panic::die::::WayPoint::0"
+            <edgeproperty
+                id="transition::neutral::attack::::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>0</name>
@@ -142,7 +149,8 @@
                 <specialid>1</specialid>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="transition::panic::die::::WayPoint::1"
+            <edgeproperty
+                id="transition::neutral::attack::::WayPoint::1"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>1</name>
@@ -158,80 +166,22 @@
         <hidden>false</hidden>
         <Transitions>
             <Transition>
-                <trigger>receiveBlow(blow : Real)</trigger>
-                <guard>((self.health - blow) = 0)</guard>
-                <post/>
+                <trigger>seeOpponent(hlth : Real)</trigger>
+                <guard>(self.shooterState = self.neutralState)</guard>
+                <post>(self.health &gt;= 50)</post>
                 <edgeproperty
-                    id="[((self.health - blow) = 0)] receiveBlow(blow : Real)/"
-                    sizeCalculated="true" type="TransitionLabel"
-                    userDefined="false" visible="true">
-                    <name>[((self.health - blow) = 0)] receiveBlow(blow : Real)/</name>
-                    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>0.0</userOffsetX>
-                        <userOffsetY>0.0</userOffsetY>
-                        <offsetX>0.0</offsetX>
-                        <offsetY>10.0</offsetY>
-                        <related length="2">
-                            <related0>transition::panic::die::::WayPoint::0</related0>
-                            <related1>transition::panic::die::::WayPoint::1</related1>
-                        </related>
-                    </strategy>
-                    <hidden>false</hidden>
-                </edgeproperty>
-            </Transition>
-        </Transitions>
-    </edge>
-    <edge type="Transition">
-        <source>attack</source>
-        <target>neutral</target>
-        <name>[((self.health - blow) &gt; 0)] receiveBlow(blow : Real)/</name>
-        <waypoints>
-            <edgeproperty
-                id="transition::attack::neutral::::WayPoint::0"
-                sizeCalculated="true" type="WayPoint"
-                userDefined="false" visible="true">
-                <name>0</name>
-                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-                    <userOffsetX>0.0</userOffsetX>
-                    <userOffsetY>0.0</userOffsetY>
-                </strategy>
-                <id>0</id>
-                <specialid>1</specialid>
-                <hidden>false</hidden>
-            </edgeproperty>
-            <edgeproperty
-                id="transition::attack::neutral::::WayPoint::1"
-                sizeCalculated="true" type="WayPoint"
-                userDefined="false" visible="true">
-                <name>1</name>
-                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
-                    <userOffsetX>0.0</userOffsetX>
-                    <userOffsetY>0.0</userOffsetY>
-                </strategy>
-                <id>1</id>
-                <specialid>2</specialid>
-                <hidden>false</hidden>
-            </edgeproperty>
-        </waypoints>
-        <hidden>false</hidden>
-        <Transitions>
-            <Transition>
-                <trigger>receiveBlow(blow : Real)</trigger>
-                <guard>((self.health - blow) &gt; 0)</guard>
-                <post/>
-                <edgeproperty
-                    id="[((self.health - blow) > 0)] receiveBlow(blow : Real)/"
+                    id="[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health >= 50)]"
                     sizeCalculated="true" type="TransitionLabel"
                     userDefined="true" visible="true">
-                    <name>[((self.health - blow) &gt; 0)] receiveBlow(blow : Real)/</name>
+                    <name>[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health &gt;= 50)]</name>
                     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>16.0</userOffsetX>
-                        <userOffsetY>259.0</userOffsetY>
+                        <userOffsetX>-6.0</userOffsetX>
+                        <userOffsetY>-55.0</userOffsetY>
                         <offsetX>0.0</offsetX>
                         <offsetY>10.0</offsetY>
                         <related length="2">
-                            <related0>transition::attack::neutral::::WayPoint::0</related0>
-                            <related1>transition::attack::neutral::::WayPoint::1</related1>
+                            <related0>transition::neutral::attack::::WayPoint::0</related0>
+                            <related1>transition::neutral::attack::::WayPoint::1</related1>
                         </related>
                     </strategy>
                     <hidden>false</hidden>
@@ -241,10 +191,143 @@
     </edge>
     <edge type="Transition">
         <source>attack</source>
-        <target>die</target>
-        <name>[((self.health - blow) = 0)] receiveBlow(blow : Real)/</name>
+        <target>attack</target>
+        <name>receiveBlow(blow : Real)/ [(self.health &gt;= 50)]</name>
         <waypoints>
-            <edgeproperty id="transition::attack::die::::WayPoint::0"
+            <edgeproperty id="transition::attack::attack::::WayPoint::0"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToCorner">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <basisDeltaX>ABSOLUTE</basisDeltaX>
+                    <deltaX>0.0</deltaX>
+                    <maxDeltaX>0.0</maxDeltaX>
+                    <basisDeltaY>RELATIVE</basisDeltaY>
+                    <deltaY>-0.3333</deltaY>
+                    <maxDeltaY>66.66</maxDeltaY>
+                    <corner>NORTH_EAST</corner>
+                    <relativeNodeId>attack</relativeNodeId>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="transition::attack::attack::::WayPoint::1"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="false">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToCorner">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <basisDeltaX>RELATIVE</basisDeltaX>
+                    <deltaX>0.6666</deltaX>
+                    <maxDeltaX>133.32</maxDeltaX>
+                    <basisDeltaY>RELATIVE</basisDeltaY>
+                    <deltaY>-0.3333</deltaY>
+                    <maxDeltaY>66.66</maxDeltaY>
+                    <corner>NORTH_EAST</corner>
+                    <relativeNodeId>attack</relativeNodeId>
+                </strategy>
+                <id>1</id>
+                <specialid>3</specialid>
+                <hidden>true</hidden>
+            </edgeproperty>
+            <edgeproperty id="transition::attack::attack::::WayPoint::2"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="false">
+                <name>2</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToCorner">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <basisDeltaX>RELATIVE</basisDeltaX>
+                    <deltaX>0.6666</deltaX>
+                    <maxDeltaX>133.32</maxDeltaX>
+                    <basisDeltaY>RELATIVE</basisDeltaY>
+                    <deltaY>0.6666</deltaY>
+                    <maxDeltaY>133.32</maxDeltaY>
+                    <corner>NORTH_EAST</corner>
+                    <relativeNodeId>attack</relativeNodeId>
+                </strategy>
+                <id>2</id>
+                <specialid>4</specialid>
+                <hidden>true</hidden>
+            </edgeproperty>
+            <edgeproperty id="transition::attack::attack::::WayPoint::3"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="false">
+                <name>3</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToCorner">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <basisDeltaX>RELATIVE</basisDeltaX>
+                    <deltaX>-0.3333</deltaX>
+                    <maxDeltaX>66.66</maxDeltaX>
+                    <basisDeltaY>RELATIVE</basisDeltaY>
+                    <deltaY>0.6666</deltaY>
+                    <maxDeltaY>133.32</maxDeltaY>
+                    <corner>NORTH_EAST</corner>
+                    <relativeNodeId>attack</relativeNodeId>
+                </strategy>
+                <id>3</id>
+                <specialid>5</specialid>
+                <hidden>true</hidden>
+            </edgeproperty>
+            <edgeproperty id="transition::attack::attack::::WayPoint::4"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>4</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyRelativeToCorner">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                    <basisDeltaX>RELATIVE</basisDeltaX>
+                    <deltaX>-0.3333</deltaX>
+                    <maxDeltaX>66.66</maxDeltaX>
+                    <basisDeltaY>ABSOLUTE</basisDeltaY>
+                    <deltaY>0.0</deltaY>
+                    <maxDeltaY>0.0</maxDeltaY>
+                    <corner>NORTH_EAST</corner>
+                    <relativeNodeId>attack</relativeNodeId>
+                </strategy>
+                <id>4</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <reflexivePosition>NORTH_EAST</reflexivePosition>
+        <Transitions>
+            <Transition>
+                <trigger>receiveBlow(blow : Real)</trigger>
+                <guard/>
+                <post>(self.health &gt;= 50)</post>
+                <edgeproperty
+                    id="receiveBlow(blow : Real)/ [(self.health >= 50)]"
+                    sizeCalculated="true" type="TransitionLabel"
+                    userDefined="true" visible="true">
+                    <name>receiveBlow(blow : Real)/ [(self.health &gt;= 50)]</name>
+                    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                        <userOffsetX>55.0</userOffsetX>
+                        <userOffsetY>-76.0</userOffsetY>
+                        <offsetX>0.0</offsetX>
+                        <offsetY>10.0</offsetY>
+                        <related length="2">
+                            <related0>transition::attack::attack::::WayPoint::0</related0>
+                            <related1>transition::attack::attack::::WayPoint::4</related1>
+                        </related>
+                    </strategy>
+                    <hidden>false</hidden>
+                </edgeproperty>
+            </Transition>
+        </Transitions>
+    </edge>
+    <edge type="Transition">
+        <source>attack</source>
+        <target>panic</target>
+        <name>receiveBlow(blow : Real)/ [(self.health &lt; 50)]</name>
+        <waypoints>
+            <edgeproperty id="transition::attack::panic::::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>0</name>
@@ -256,7 +339,7 @@
                 <specialid>1</specialid>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty id="transition::attack::die::::WayPoint::1"
+            <edgeproperty id="transition::attack::panic::::WayPoint::1"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>1</name>
@@ -273,21 +356,21 @@
         <Transitions>
             <Transition>
                 <trigger>receiveBlow(blow : Real)</trigger>
-                <guard>((self.health - blow) = 0)</guard>
-                <post/>
+                <guard/>
+                <post>(self.health &lt; 50)</post>
                 <edgeproperty
-                    id="[((self.health - blow) = 0)] receiveBlow(blow : Real)/"
+                    id="receiveBlow(blow : Real)/ [(self.health &lt; 50)]"
                     sizeCalculated="true" type="TransitionLabel"
-                    userDefined="false" visible="true">
-                    <name>[((self.health - blow) = 0)] receiveBlow(blow : Real)/</name>
+                    userDefined="true" visible="true">
+                    <name>receiveBlow(blow : Real)/ [(self.health &lt; 50)]</name>
                     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>0.0</userOffsetX>
-                        <userOffsetY>0.0</userOffsetY>
+                        <userOffsetX>41.0</userOffsetX>
+                        <userOffsetY>-47.0</userOffsetY>
                         <offsetX>0.0</offsetX>
                         <offsetY>10.0</offsetY>
                         <related length="2">
-                            <related0>transition::attack::die::::WayPoint::0</related0>
-                            <related1>transition::attack::die::::WayPoint::1</related1>
+                            <related0>transition::attack::panic::::WayPoint::0</related0>
+                            <related1>transition::attack::panic::::WayPoint::1</related1>
                         </related>
                     </strategy>
                     <hidden>false</hidden>
@@ -352,12 +435,11 @@
         </Transitions>
     </edge>
     <edge type="Transition">
-        <source>neutral</source>
-        <target>attack</target>
-        <name>[((self.health - hlth) &gt; 50)] seeOpponent(hlth : Real)/</name>
+        <source>attack</source>
+        <target>die</target>
+        <name>[(((self.health - blow) = 0) and (self.shooterState = self.attackState))] receiveBlow(blow : Real)/</name>
         <waypoints>
-            <edgeproperty
-                id="transition::neutral::attack::::WayPoint::0"
+            <edgeproperty id="transition::attack::die::::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>0</name>
@@ -369,8 +451,7 @@
                 <specialid>1</specialid>
                 <hidden>false</hidden>
             </edgeproperty>
-            <edgeproperty
-                id="transition::neutral::attack::::WayPoint::1"
+            <edgeproperty id="transition::attack::die::::WayPoint::1"
                 sizeCalculated="true" type="WayPoint"
                 userDefined="false" visible="true">
                 <name>1</name>
@@ -386,22 +467,22 @@
         <hidden>false</hidden>
         <Transitions>
             <Transition>
-                <trigger>seeOpponent(hlth : Real)</trigger>
-                <guard>((self.health - hlth) &gt; 50)</guard>
+                <trigger>receiveBlow(blow : Real)</trigger>
+                <guard>(((self.health - blow) = 0) and (self.shooterState = self.attackState))</guard>
                 <post/>
                 <edgeproperty
-                    id="[((self.health - hlth) > 50)] seeOpponent(hlth : Real)/"
+                    id="[(((self.health - blow) = 0) and (self.shooterState = self.attackState))] receiveBlow(blow : Real)/"
                     sizeCalculated="true" type="TransitionLabel"
-                    userDefined="true" visible="true">
-                    <name>[((self.health - hlth) &gt; 50)] seeOpponent(hlth : Real)/</name>
+                    userDefined="false" visible="true">
+                    <name>[(((self.health - blow) = 0) and (self.shooterState = self.attackState))] receiveBlow(blow : Real)/</name>
                     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>42.0</userOffsetX>
-                        <userOffsetY>263.0</userOffsetY>
+                        <userOffsetX>0.0</userOffsetX>
+                        <userOffsetY>0.0</userOffsetY>
                         <offsetX>0.0</offsetX>
                         <offsetY>10.0</offsetY>
                         <related length="2">
-                            <related0>transition::neutral::attack::::WayPoint::0</related0>
-                            <related1>transition::neutral::attack::::WayPoint::1</related1>
+                            <related0>transition::attack::die::::WayPoint::0</related0>
+                            <related1>transition::attack::die::::WayPoint::1</related1>
                         </related>
                     </strategy>
                     <hidden>false</hidden>
@@ -412,7 +493,7 @@
     <edge type="Transition">
         <source>neutral</source>
         <target>panic</target>
-        <name>[((self.health - hlth) &lt; 50)] seeOpponent(hlth : Real)/</name>
+        <name>[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health &lt; 50)]</name>
         <waypoints>
             <edgeproperty id="transition::neutral::panic::::WayPoint::0"
                 sizeCalculated="true" type="WayPoint"
@@ -443,21 +524,135 @@
         <Transitions>
             <Transition>
                 <trigger>seeOpponent(hlth : Real)</trigger>
-                <guard>((self.health - hlth) &lt; 50)</guard>
-                <post/>
+                <guard>(self.shooterState = self.neutralState)</guard>
+                <post>(self.health &lt; 50)</post>
                 <edgeproperty
-                    id="[((self.health - hlth) &lt; 50)] seeOpponent(hlth : Real)/"
+                    id="[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health &lt; 50)]"
                     sizeCalculated="true" type="TransitionLabel"
                     userDefined="true" visible="true">
-                    <name>[((self.health - hlth) &lt; 50)] seeOpponent(hlth : Real)/</name>
+                    <name>[(self.shooterState = self.neutralState)] seeOpponent(hlth : Real)/ [(self.health &lt; 50)]</name>
                     <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
-                        <userOffsetX>150.0</userOffsetX>
-                        <userOffsetY>-30.0</userOffsetY>
+                        <userOffsetX>81.0</userOffsetX>
+                        <userOffsetY>8.0</userOffsetY>
                         <offsetX>0.0</offsetX>
                         <offsetY>10.0</offsetY>
                         <related length="2">
                             <related0>transition::neutral::panic::::WayPoint::0</related0>
                             <related1>transition::neutral::panic::::WayPoint::1</related1>
+                        </related>
+                    </strategy>
+                    <hidden>false</hidden>
+                </edgeproperty>
+            </Transition>
+        </Transitions>
+    </edge>
+    <edge type="Transition">
+        <source>panic</source>
+        <target>die</target>
+        <name>[(self.shooterState = self.panicState)] receiveBlow(blow : Real)/ [(self.health = 0)]</name>
+        <waypoints>
+            <edgeproperty id="transition::panic::die::::WayPoint::0"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty id="transition::panic::die::::WayPoint::1"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <Transitions>
+            <Transition>
+                <trigger>receiveBlow(blow : Real)</trigger>
+                <guard>(self.shooterState = self.panicState)</guard>
+                <post>(self.health = 0)</post>
+                <edgeproperty
+                    id="[(self.shooterState = self.panicState)] receiveBlow(blow : Real)/ [(self.health = 0)]"
+                    sizeCalculated="true" type="TransitionLabel"
+                    userDefined="false" visible="true">
+                    <name>[(self.shooterState = self.panicState)] receiveBlow(blow : Real)/ [(self.health = 0)]</name>
+                    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                        <userOffsetX>0.0</userOffsetX>
+                        <userOffsetY>0.0</userOffsetY>
+                        <offsetX>0.0</offsetX>
+                        <offsetY>10.0</offsetY>
+                        <related length="2">
+                            <related0>transition::panic::die::::WayPoint::0</related0>
+                            <related1>transition::panic::die::::WayPoint::1</related1>
+                        </related>
+                    </strategy>
+                    <hidden>false</hidden>
+                </edgeproperty>
+            </Transition>
+        </Transitions>
+    </edge>
+    <edge type="Transition">
+        <source>attack</source>
+        <target>neutral</target>
+        <name>[(self.shooterState = self.attackState)] lostOpponent()/</name>
+        <waypoints>
+            <edgeproperty
+                id="transition::attack::neutral::::WayPoint::0"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>0</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>0</id>
+                <specialid>1</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+            <edgeproperty
+                id="transition::attack::neutral::::WayPoint::1"
+                sizeCalculated="true" type="WayPoint"
+                userDefined="false" visible="true">
+                <name>1</name>
+                <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyAttachedIntersection">
+                    <userOffsetX>0.0</userOffsetX>
+                    <userOffsetY>0.0</userOffsetY>
+                </strategy>
+                <id>1</id>
+                <specialid>2</specialid>
+                <hidden>false</hidden>
+            </edgeproperty>
+        </waypoints>
+        <hidden>false</hidden>
+        <Transitions>
+            <Transition>
+                <trigger>lostOpponent()</trigger>
+                <guard>(self.shooterState = self.attackState)</guard>
+                <post/>
+                <edgeproperty
+                    id="[(self.shooterState = self.attackState)] lostOpponent()/"
+                    sizeCalculated="true" type="TransitionLabel"
+                    userDefined="false" visible="true">
+                    <name>[(self.shooterState = self.attackState)] lostOpponent()/</name>
+                    <strategy type="org.tzi.use.gui.views.diagrams.elements.positioning.StrategyInBetween">
+                        <userOffsetX>0.0</userOffsetX>
+                        <userOffsetY>0.0</userOffsetY>
+                        <offsetX>0.0</offsetX>
+                        <offsetY>10.0</offsetY>
+                        <related length="2">
+                            <related0>transition::attack::neutral::::WayPoint::0</related0>
+                            <related1>transition::attack::neutral::::WayPoint::1</related1>
                         </related>
                     </strategy>
                     <hidden>false</hidden>
