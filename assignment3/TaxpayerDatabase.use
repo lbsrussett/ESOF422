@@ -18,7 +18,7 @@ end
 
 class TaxpayerDatabase < Facade
 attributes
-	taxpayers : Sequence(Taxpayer);
+	taxpayers : Sequence(Taxpayer) --init : ;
 	dataEncryption : DataEncryption;
 operations
 	search()
@@ -76,6 +76,11 @@ end
 association entry between
 	TaxpayerDatabase [1] role database
 	Taxpayer [1..*] role taxpayer
+end
+
+association scheme between
+	TaxpayerDatabase [1] role database
+	DataEncryption [1] role encryptscheme
 end
 
 -- constraints 
